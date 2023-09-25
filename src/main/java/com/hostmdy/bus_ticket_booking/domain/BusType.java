@@ -1,9 +1,10 @@
 package com.hostmdy.bus_ticket_booking.domain;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.HashSet;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -17,28 +18,33 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter @NoArgsConstructor
-public class Seat {
+public class BusType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String seatNumber;
-	private Boolean status;
+	private String typeName;
+	private Integer capacity;
 	
-	@OneToMany(mappedBy = "seat",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "busType", cascade = CascadeType.ALL)
 	@JsonIgnore
-	private Set<BusSeat> busSeats = new HashSet<>();
-	/*
-	@OneToMany(mappedBy = "seat")
-	@JsonIgnore
-	private Set<BusTypeSeat> busTypeSeats = new HashSet<>();
+	private Set<Bus> buses = new HashSet<>();
 	
-	@ManyToOne
-	@JoinColumn(name = "bus_id")
+	
+	/*@OneToMany(mappedBy = "busType", cascade = CascadeType.ALL)
 	@JsonIgnore
-	private Bus bus;*/
+	private Set<BusTypeSeat> busTypeSeats= new HashSet<>();
+
+	@Override
+	public String toString() {
+		return "BusType [busTypeSeats=" + busTypeSeats + "]";
+	}*/
+
+	
 
 	
 	
 	
 	
+	
+
 }
