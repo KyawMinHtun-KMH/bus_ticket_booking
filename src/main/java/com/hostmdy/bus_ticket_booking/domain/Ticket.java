@@ -12,6 +12,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,4 +29,26 @@ public class Ticket {
 	@OneToMany(mappedBy = "ticket",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<Order> orders = new HashSet<>();
+	private Double price;
+	
+	private Boolean status = true ;
+	
+	@OneToOne(mappedBy = "ticket")
+	@JoinColumn(name = "bus_id")
+	private Bus bus;
+
+	public Ticket(Double price) {
+		super();
+		this.price = price;
+	}
+
+	
+
+	
+	
+	
+
+	
+	
+	
 }

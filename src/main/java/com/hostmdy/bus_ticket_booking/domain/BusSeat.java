@@ -12,20 +12,24 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter @NoArgsConstructor
-public class Passenger {
+public class BusSeat {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String name;
-	private String gender;
-	private Long phoneNumber;
-	private String email;
-	private String specialRequest;
+	@ManyToOne
+	@JoinColumn(name = "bus_id")
+	private Bus bus;
 	
 	@ManyToOne
-	@JoinColumn(name = "order_id")
-	private Order order;
-	
+	@JoinColumn(name = "seat_id")
+	private Seat seat;
 
+	public BusSeat(Bus bus, Seat seat) {
+		super();
+		this.bus = bus;
+		this.seat = seat;
+	}
+	
+	
 }
