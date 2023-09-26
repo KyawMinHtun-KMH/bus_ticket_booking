@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.hostmdy.bus_ticket_booking.domain.Bus;
-import com.hostmdy.bus_ticket_booking.domain.BusType;
 import com.hostmdy.bus_ticket_booking.domain.Route;
-import com.hostmdy.bus_ticket_booking.domain.Ticket;
 
 public interface BusService {
 	Bus save(Bus bus);
