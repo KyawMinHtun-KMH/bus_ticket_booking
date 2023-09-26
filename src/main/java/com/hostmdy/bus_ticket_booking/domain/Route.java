@@ -31,7 +31,7 @@ public class Route {
 	@Enumerated(EnumType.STRING)
 	private City endLocation;
 	
-	@OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "route", cascade = CascadeType.REMOVE)
 	@JsonIgnore
 	private Set<Bus> buses = new HashSet<>();
 	

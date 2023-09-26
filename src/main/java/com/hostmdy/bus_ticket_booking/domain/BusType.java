@@ -25,7 +25,7 @@ public class BusType {
 	private String typeName;
 	private Integer capacity;
 	
-	@OneToMany(mappedBy = "busType", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "busType", cascade = CascadeType.REMOVE)
 	@JsonIgnore
 	private Set<Bus> buses = new HashSet<>();
 	
