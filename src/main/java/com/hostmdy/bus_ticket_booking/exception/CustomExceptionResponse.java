@@ -20,4 +20,16 @@ public class CustomExceptionResponse {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	}
 	
+	@ExceptionHandler(TicketNotFoundException.class)
+	public ResponseEntity<NotFoundExceptionResponse> handleTicketNotFoundException(TicketNotFoundException ex){
+		NotFoundExceptionResponse response = new NotFoundExceptionResponse(ex.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	}
+	
+	@ExceptionHandler(UsernameNotFoundException.class)
+	public ResponseEntity<NotFoundExceptionResponse> handleUsernameNotFoundException(UsernameNotFoundException ex){
+		NotFoundExceptionResponse response = new NotFoundExceptionResponse(ex.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	}
+	
 }

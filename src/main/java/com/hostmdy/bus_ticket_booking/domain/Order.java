@@ -1,7 +1,6 @@
 package com.hostmdy.bus_ticket_booking.domain;
 
-import java.time.LocalDate;
-import java.util.HashSet;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,8 +13,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,19 +27,24 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	private LocalDate bookingDate;
-	private String seatNumber;
+	private LocalDateTime bookingDateTime;
+	private Set<String> seatNumber;
 	private Integer seatAmount;
-	private Long totalPrice;
+	private Double totalPrice;
+	
+	@PrePersist
+    private void prepersist() {
+		bookingDateTime = LocalDateTime.now();
+	}
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@OneToMany(mappedBy = "order",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "order",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinColumn(name = "passenger_id")
 	@JsonIgnore
-	private Set<Passenger> passengers = new HashSet<>();
+	private Passenger passenger;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "payment_id")

@@ -27,18 +27,5 @@ public class Seat {
 	@OneToMany(mappedBy = "seat",cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<BusSeat> busSeats = new HashSet<>();
-	/*
-	@OneToMany(mappedBy = "seat")
-	@JsonIgnore
-	private Set<BusTypeSeat> busTypeSeats = new HashSet<>();
-	
-	@ManyToOne
-	@JoinColumn(name = "bus_id")
-	@JsonIgnore
-	private Bus bus;*/
 
-	
-	
-	
-	
 }
