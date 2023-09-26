@@ -11,6 +11,8 @@ public interface BusService {
 	
 	Bus createBus(Bus bus,Route route,String typeName,Double price);
 	
+	Bus updateBus(Bus bus,Route route,String typeName,Double price);
+	
 	List<Bus> getAllBus();
 	
 	Optional<Bus> getBusById(Long busId);
