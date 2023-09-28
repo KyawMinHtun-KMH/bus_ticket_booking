@@ -32,4 +32,10 @@ public class CustomExceptionResponse {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	}
 	
+	@ExceptionHandler(RouteNotFoundException.class)
+	public ResponseEntity<NotFoundExceptionResponse> handleRouteNotFoundException(RouteNotFoundException ex){
+		NotFoundExceptionResponse response = new NotFoundExceptionResponse(ex.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	}
+	
 }

@@ -50,6 +50,7 @@ public class OrderServiceImpl implements OrderService{
 		if (ticket.getStatus()) {
 			Order order = new Order();
 			Integer seatAmount = seatNumber.size();
+			order.setSeatNumber(seatNumber);
 			order.setSeatAmount(seatAmount);
 			order.setTotalPrice(seatAmount*ticket.getPrice());
 			order.setPassenger(passenger);
