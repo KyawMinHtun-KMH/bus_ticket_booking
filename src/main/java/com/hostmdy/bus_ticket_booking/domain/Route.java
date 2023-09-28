@@ -1,7 +1,9 @@
 package com.hostmdy.bus_ticket_booking.domain;
 
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -31,8 +33,8 @@ public class Route {
 	@Enumerated(EnumType.STRING)
 	private City endLocation;
 	
-	@OneToMany(mappedBy = "route", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "route")
 	@JsonIgnore
-	private Set<Bus> buses = new HashSet<>();
+	private List<Ticket> tickets = new ArrayList<>();
 	
 }

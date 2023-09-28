@@ -10,26 +10,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Getter @Setter @NoArgsConstructor
-public class BusSeat {
+@Entity @Getter @Setter @NoArgsConstructor
+public class TicketSeat {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@ManyToOne
-	@JoinColumn(name = "bus_id")
-	private Bus bus;
+	@JoinColumn(name = "ticket_id")
+	private Ticket ticket;
 	
 	@ManyToOne
 	@JoinColumn(name = "seat_id")
 	private Seat seat;
 
-	public BusSeat(Bus bus, Seat seat) {
+	public TicketSeat(Ticket ticket, Seat seat) {
 		super();
-		this.bus = bus;
+		this.ticket = ticket;
 		this.seat = seat;
 	}
+	
 	
 	
 }

@@ -10,11 +10,7 @@ public interface BusTypeService {
 	
 	List<BusType> getAllBusType();
 	
-	BusType createBusType(BusType busType);
-	
 	Optional<BusType> getBusTypeById(Long busTypeId);
 	
-	BusType updateBusType(BusType busType);
-	
-	void deletById(Long busTypeId);
+	/*void deletById(Long busTypeId);*/
 } 

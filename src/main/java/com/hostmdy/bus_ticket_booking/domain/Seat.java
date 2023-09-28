@@ -24,8 +24,9 @@ public class Seat {
 	private String seatNumber;
 	private Boolean status;
 	
-	@OneToMany(mappedBy = "seat",cascade = CascadeType.ALL)
+	
+	@OneToMany(mappedBy = "seat",cascade = CascadeType.PERSIST)
 	@JsonIgnore
-	private Set<BusSeat> busSeats = new HashSet<>();
+	private Set<TicketSeat> ticketSeats = new HashSet<>();
 
 }
