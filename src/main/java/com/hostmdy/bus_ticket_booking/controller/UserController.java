@@ -1,11 +1,13 @@
 package com.hostmdy.bus_ticket_booking.controller;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,9 +19,11 @@ import com.hostmdy.bus_ticket_booking.domain.security.Role;
 import com.hostmdy.bus_ticket_booking.domain.security.UserRole;
 import com.hostmdy.bus_ticket_booking.exception.RoleNotFoundException;
 import com.hostmdy.bus_ticket_booking.payload.LoginRequest;
+import com.hostmdy.bus_ticket_booking.service.MapValidationErrorService;
 import com.hostmdy.bus_ticket_booking.service.RoleService;
 import com.hostmdy.bus_ticket_booking.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -27,13 +31,20 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 public class UserController {
-	
+
 	private final UserService userService;
 	private final RoleService roleService;
-	
+	private final MapValidationErrorService mapValidationErrorService;
+
 	@PostMapping("/signup")
 	@Transactional
-	public ResponseEntity<?> signup(@RequestBody User user) {
+	public ResponseEntity<?> signup(@Valid @RequestBody User user, BindingResult result) {
+		ResponseEntity<Map<String, String>> errorResponse = mapValidationErrorService.validate(result);
+
+		if (errorResponse != null) {
+			return errorResponse;
+		}
+
 		Optional<Role> roleOpt = roleService.getRoleByName("ROLE_USER");
 
 		if (roleOpt.isEmpty()) {
@@ -43,17 +54,23 @@ public class UserController {
 		Set<UserRole> userRoles = new HashSet<>();
 		userRoles.add(new UserRole(user, roleOpt.get()));
 		userService.createUser(user, userRoles);
-		
+
 		return ResponseEntity.ok("User created okay");
 
 	}
-	
+
 	@PostMapping("/signin")
-	public ResponseEntity<?> signin(@RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<?> signin( @Valid @RequestBody LoginRequest loginRequest,BindingResult result) {
+		ResponseEntity<Map<String, String>> errorResponse = mapValidationErrorService.validate(result);
+
+		if (errorResponse != null) {
+			return errorResponse;
+		}
+		
 		Optional<User> userOpt = userService.getUserByUsername(loginRequest.getUsername());
 
 		if (userOpt.isEmpty()) {
-			throw new RoleNotFoundException("user with username="+loginRequest.getUsername()+" is not found");
+			throw new RoleNotFoundException("user with username=" + loginRequest.getUsername() + " is not found");
 		}
 
 		return ResponseEntity.ok("Login Success");

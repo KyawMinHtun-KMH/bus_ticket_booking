@@ -22,7 +22,6 @@ public class Seat {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String seatNumber;
-	private Boolean status;
 	
 	
 	@OneToMany(mappedBy = "seat",cascade = CascadeType.PERSIST)
