@@ -3,8 +3,6 @@ package com.hostmdy.bus_ticket_booking.domain;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,6 +27,8 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private LocalDateTime bookingDateTime;
+	
+	@NotNull(message = "seat number is required")
 	private Set<String> seatNumber;
 	private Integer seatAmount;
 	private Double totalPrice;
@@ -43,7 +44,6 @@ public class Order {
 	
 	@OneToOne(mappedBy = "order",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name = "passenger_id")
-	@JsonIgnore
 	private Passenger passenger;
 	
 	@OneToOne(cascade = CascadeType.ALL)

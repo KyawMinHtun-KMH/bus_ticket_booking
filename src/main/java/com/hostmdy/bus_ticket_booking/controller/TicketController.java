@@ -38,9 +38,6 @@ public class TicketController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<?> createTicket(@Valid @RequestBody TicketRequest ticketRequest,BindingResult bindingResult){
-//		if(bindingResult.hasErrors()) {
-//			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ticket is required field");
-//		}
 		
 		ResponseEntity<Map<String, String>> errorRespose = mapValidationErrorService.validate(bindingResult);
 		if(errorRespose != null) {
@@ -91,7 +88,13 @@ public class TicketController {
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<?> updateTicket(@RequestBody TicketRequest ticketRequest){
+	public ResponseEntity<?> updateTicket(@Valid @RequestBody TicketRequest ticketRequest,BindingResult bindingResult){
+		
+		ResponseEntity<Map<String, String>> errorRespose = mapValidationErrorService.validate(bindingResult);
+		if(errorRespose != null) {
+			return errorRespose;
+		}
+		
 		Long ticketId = ticketRequest.getTicket().getId();
 		Optional<Ticket> tickeOpt = ticketService.getTicketById(ticketId);
 		

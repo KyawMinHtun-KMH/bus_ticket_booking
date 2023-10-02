@@ -14,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,10 +27,19 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotBlank(message = "firstName is required")
 	private String firstName;
+	
+	@NotBlank(message = "lastName is required")
 	private String lastName;
+	
+	@NotBlank(message = "fullname is required")
 	private String fullname;
+	
+	@NotBlank(message = "email is required")
 	private String username;
+	
+	@NotBlank(message = "password is required")
 	private String password;
 	
 	@OneToMany(mappedBy = "user",fetch = FetchType.EAGER,cascade = CascadeType.ALL)

@@ -1,5 +1,6 @@
 package com.hostmdy.bus_ticket_booking.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,12 +16,13 @@ public class TicketSeat {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private Boolean status = true;
 	
 	@ManyToOne
 	@JoinColumn(name = "ticket_id")
 	private Ticket ticket;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "seat_id")
 	private Seat seat;
 

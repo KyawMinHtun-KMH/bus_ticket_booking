@@ -44,14 +44,7 @@ public class BusType {
 		createdAt = LocalDateTime.now();
 	}
 	
-	/*@OneToMany(mappedBy = "busType", cascade = CascadeType.ALL)
-	@JsonIgnore
-	private Set<BusTypeSeat> busTypeSeats= new HashSet<>();
-
-	@Override
-	public String toString() {
-		return "BusType [busTypeSeats=" + busTypeSeats + "]";
-	}*/
+	
 
 	
 

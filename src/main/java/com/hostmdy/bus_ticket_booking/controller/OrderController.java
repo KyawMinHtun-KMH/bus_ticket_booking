@@ -1,10 +1,12 @@
 package com.hostmdy.bus_ticket_booking.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,9 +19,11 @@ import com.hostmdy.bus_ticket_booking.domain.Order;
 import com.hostmdy.bus_ticket_booking.domain.User;
 import com.hostmdy.bus_ticket_booking.exception.UsernameNotFoundException;
 import com.hostmdy.bus_ticket_booking.payload.OrderRequest;
+import com.hostmdy.bus_ticket_booking.service.MapValidationErrorService;
 import com.hostmdy.bus_ticket_booking.service.OrderService;
 import com.hostmdy.bus_ticket_booking.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -29,9 +33,16 @@ import lombok.RequiredArgsConstructor;
 public class OrderController {
 	private final OrderService orderService;
 	private final UserService userService;
+	private final MapValidationErrorService mapValidationErrorService;
 	
 	@PostMapping("/create/{ticketId}/{userId}")
-	public ResponseEntity<Order> createOrder(@PathVariable Long userId,@PathVariable Long ticketId,@RequestBody OrderRequest orderRequest){
+	public ResponseEntity<?> createOrder(@PathVariable Long userId,@PathVariable Long ticketId,@Valid @RequestBody OrderRequest orderRequest,BindingResult result){
+		
+		ResponseEntity<Map<String, String>> errorResponse = mapValidationErrorService.validate(result);
+
+		if (errorResponse != null) {
+			return errorResponse;
+		}
 		
 		Order createdOrder = orderService.createOrder(orderRequest.getSeatNumber(), ticketId, orderRequest.getPassenger(), orderRequest.getPayment(), userId);
 		
