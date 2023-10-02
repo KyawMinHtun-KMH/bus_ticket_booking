@@ -1,6 +1,7 @@
 package com.hostmdy.bus_ticket_booking.service;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,5 +17,9 @@ public interface TicketService {
 	
 	Optional<Ticket> getTicketById(Long ticketId);
 	
-	/*List<Ticket> getAllTicketByRouteAndDepature(String startLocation,String endLocation,LocalDate depature);*/
+	List<Ticket> getAllTicketByRouteAndDepature(String startLocation,String endLocation,LocalDate depature);
+	
+	void deletTicket(Long ticketId);
+	
+	Ticket updateTicket(Ticket ticket,String typeName,Route route);
 }

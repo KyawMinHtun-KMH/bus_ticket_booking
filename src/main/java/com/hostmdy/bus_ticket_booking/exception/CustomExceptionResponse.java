@@ -38,4 +38,10 @@ public class CustomExceptionResponse {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	}
 	
+	@ExceptionHandler(BusTypeNotFoundException.class)
+	public ResponseEntity<NotFoundExceptionResponse> handleBusTypeNotFoundException(BusTypeNotFoundException ex){
+		NotFoundExceptionResponse response = new NotFoundExceptionResponse(ex.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	}
+	
 }
