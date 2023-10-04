@@ -5,12 +5,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.hostmdy.bus_ticket_booking.domain.BusType;
+import com.hostmdy.bus_ticket_booking.domain.Bus;
 import com.hostmdy.bus_ticket_booking.domain.City;
 import com.hostmdy.bus_ticket_booking.domain.Route;
 import com.hostmdy.bus_ticket_booking.domain.Seat;
 import com.hostmdy.bus_ticket_booking.domain.security.Role;
-import com.hostmdy.bus_ticket_booking.repository.BusTypeRepository;
+import com.hostmdy.bus_ticket_booking.repository.BusRepository;
 import com.hostmdy.bus_ticket_booking.repository.RoleRepository;
 import com.hostmdy.bus_ticket_booking.repository.RouteRepository;
 import com.hostmdy.bus_ticket_booking.repository.SeatRepository;
@@ -27,7 +27,7 @@ public class BusTicketBookingApplication implements CommandLineRunner{
 	public RouteRepository routeRepository;
 	
 	@Autowired
-	public BusTypeRepository busTypeRepository;
+	public BusRepository busRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(BusTicketBookingApplication.class, args);
@@ -108,16 +108,16 @@ public class BusTicketBookingApplication implements CommandLineRunner{
 		routeRepository.save(route3);
 		routeRepository.save(route4);
 		
-		BusType type1 = new BusType();
+		Bus type1 = new Bus();
 		type1.setCapacity(7);
 		type1.setTypeName("Scania Standard");
 		
-		BusType type2 = new BusType();
+		Bus type2 = new Bus();
 		type2.setCapacity(5);
 		type2.setTypeName("Scania VIP");
 		
-		busTypeRepository.save(type1);
-		busTypeRepository.save(type2);
+		busRepository.save(type1);
+		busRepository.save(type2);
 		
 	}
 

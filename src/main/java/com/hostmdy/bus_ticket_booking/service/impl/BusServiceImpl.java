@@ -5,35 +5,35 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.hostmdy.bus_ticket_booking.domain.BusType;
+import com.hostmdy.bus_ticket_booking.domain.Bus;
 import com.hostmdy.bus_ticket_booking.exception.BusTypeNotFoundException;
-import com.hostmdy.bus_ticket_booking.repository.BusTypeRepository;
-import com.hostmdy.bus_ticket_booking.service.BusTypeService;
+import com.hostmdy.bus_ticket_booking.repository.BusRepository;
+import com.hostmdy.bus_ticket_booking.service.BusService;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class BusTypeServiceImpl implements BusTypeService {
+public class BusServiceImpl implements BusService {
 	
-	private final BusTypeRepository busTypeRepository;
+	private final BusRepository busRepository;
 
 	@Override
-	public BusType save(BusType busType) {
+	public Bus save(Bus busType) {
 		// TODO Auto-generated method stub
-		return busTypeRepository.save(busType);
+		return busRepository.save(busType);
 	}
 
 	@Override
-	public List<BusType> getAllBusType() {
+	public List<Bus> getAllBusType() {
 		// TODO Auto-generated method stub
-		return (List<BusType>) busTypeRepository.findAll();
+		return (List<Bus>) busRepository.findAll();
 	}
 
 	@Override
-	public Optional<BusType> getBusTypeById(Long busTypeId) {
+	public Optional<Bus> getBusTypeById(Long busTypeId) {
 		// TODO Auto-generated method stub
-		Optional<BusType> busTypeOpt = busTypeRepository.findById(busTypeId);
+		Optional<Bus> busTypeOpt = busRepository.findById(busTypeId);
 		if(busTypeOpt.isEmpty()) {
 			throw new BusTypeNotFoundException("BusType with id = "+busTypeId+" is not found");
 		}
