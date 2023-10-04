@@ -41,8 +41,8 @@ public class Ticket {
 	
 	private Boolean status = true;
 	
-	@DateTimeFormat(pattern = "dd/MM/yyyy", iso = DateTimeFormat.ISO.DATE)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	@DateTimeFormat(pattern = "yyyy-MM-dd", iso = DateTimeFormat.ISO.DATE)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	@NotNull(message = "depature is required")
 	private LocalDate depature;
 	
@@ -61,8 +61,8 @@ public class Ticket {
 	private Set<Order> orders = new HashSet<>();
 	
 	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "busType_id")
-	private BusType busType;
+	@JoinColumn(name = "bus_id")
+	private Bus bus;
 	
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "route_id")

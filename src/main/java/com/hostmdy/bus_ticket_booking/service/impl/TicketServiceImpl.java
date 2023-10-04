@@ -9,13 +9,13 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.hostmdy.bus_ticket_booking.domain.BusType;
+import com.hostmdy.bus_ticket_booking.domain.Bus;
 import com.hostmdy.bus_ticket_booking.domain.Route;
 import com.hostmdy.bus_ticket_booking.domain.Seat;
 import com.hostmdy.bus_ticket_booking.domain.Ticket;
 import com.hostmdy.bus_ticket_booking.domain.TicketSeat;
 import com.hostmdy.bus_ticket_booking.exception.TicketNotFoundException;
-import com.hostmdy.bus_ticket_booking.repository.BusTypeRepository;
+import com.hostmdy.bus_ticket_booking.repository.BusRepository;
 import com.hostmdy.bus_ticket_booking.repository.RouteRepository;
 import com.hostmdy.bus_ticket_booking.repository.SeatRepository;
 import com.hostmdy.bus_ticket_booking.repository.TicketRepository;
@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TicketServiceImpl implements TicketService {
 	private final TicketRepository ticketRepository;
-	private final BusTypeRepository busTypeRepository;
+	private final BusRepository busRepository;
 	private final RouteRepository routeRepository;
 	private final SeatRepository seatRepository;
 	private final TicketSeatRepository ticketSeatRepository;
@@ -42,12 +42,12 @@ public class TicketServiceImpl implements TicketService {
 	@Override
 	public Ticket createTicket(Ticket ticket, String typeName, Route route) {
 		// TODO Auto-generated method stub
-		BusType busType = busTypeRepository.findByTypeName(typeName);
+		Bus bus = busRepository.findByTypeName(typeName);
 
-		ticket.setBusType(busType);
-		busType.getTickets().add(ticket);
+		ticket.setBus(bus);
+		bus.getTickets().add(ticket);
 
-		Integer capacity = busType.getCapacity();
+		Integer capacity = bus.getCapacity();
 		List<Seat> seats = (List<Seat>) seatRepository.findAll();
 		Integer seatAmount = 1;
 		for (final Seat seat : seats) {
@@ -109,7 +109,7 @@ public class TicketServiceImpl implements TicketService {
 			throw new TicketNotFoundException("Ticket with id = " + ticketId + " is not found");
 		}
 		Ticket ticket = ticketOpt.get();
-		ticket.setBusType(null);
+		ticket.setBus(null);
 		ticket.setRoute(null);
 		save(ticket);
 
@@ -120,11 +120,11 @@ public class TicketServiceImpl implements TicketService {
 	@Override
 	public Ticket updateTicket(Ticket ticket, String typeName, Route route) {
 		System.out.println("#########");
-		BusType busType = busTypeRepository.findByTypeName(typeName);
-		ticket.setBusType(busType);
-		busType.getTickets().add(ticket);
+		Bus bus = busRepository.findByTypeName(typeName);
+		ticket.setBus(bus);
+		bus.getTickets().add(ticket);
 
-		Integer capacity = busType.getCapacity();
+		Integer capacity = bus.getCapacity();
 		List<Seat> seats = (List<Seat>) seatRepository.findAll();
 		
 		Long ticketId = ticket.getId();
@@ -132,7 +132,7 @@ public class TicketServiceImpl implements TicketService {
 		Ticket updateTicket = ticketOpt.get();
 		ticket.setCreatedAt(updateTicket.getCreatedAt());
 		
-		if(updateTicket.getBusType().getTypeName() != typeName) {
+		if(updateTicket.getBus().getTypeName() != typeName) {
 			Set<TicketSeat> ticketSeats = updateTicket.getTicketSeats();
 			System.out.println("####"+ticketSeats);
 			
