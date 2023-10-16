@@ -44,13 +44,13 @@ public class BusController {
 	
 	@GetMapping("/all")
 	public ResponseEntity<List<Bus>> getAllBusses(){
-		List<Bus> busTypes = busService.getAllBusses();
+		List<Bus> buses = busService.getAllBus();
 		
-		return ResponseEntity.ok().body(busTypes);
+		return ResponseEntity.ok().body(buses);
 	}
 	
-	@GetMapping("/{busTypeId}")
-	public ResponseEntity<Bus> getBusType(@PathVariable Long busId){
+	@GetMapping("/{busId}")
+	public ResponseEntity<Bus> getBus(@PathVariable Long busId){
 		Optional<Bus> busOpt = busService.getBusById(busId);
 		
 		return ResponseEntity.ok().body(busOpt.get());

@@ -119,7 +119,7 @@ public class TicketServiceImpl implements TicketService {
 	@Transactional
 	@Override
 	public Ticket updateTicket(Ticket ticket, String typeName, Route route) {
-		System.out.println("#########");
+		//System.out.println("#########");
 		Bus bus = busRepository.findByTypeName(typeName);
 		ticket.setBus(bus);
 		bus.getTickets().add(ticket);

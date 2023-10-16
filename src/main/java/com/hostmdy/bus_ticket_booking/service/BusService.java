@@ -6,9 +6,9 @@ import java.util.Optional;
 import com.hostmdy.bus_ticket_booking.domain.Bus;
 
 public interface BusService {
-	Bus save(Bus busType);
+	Bus save(Bus bus);
 	
-	List<Bus> getAllBusses();
+	List<Bus> getAllBus();
 	
 	Optional<Bus> getBusById(Long busId);
 	

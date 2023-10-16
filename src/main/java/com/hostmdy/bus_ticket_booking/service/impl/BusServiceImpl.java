@@ -25,7 +25,7 @@ public class BusServiceImpl implements BusService {
 	}
 
 	@Override
-	public List<Bus> getAllBusses() {
+	public List<Bus> getAllBus() {
 		// TODO Auto-generated method stub
 		return (List<Bus>) busRepository.findAll();
 	}
@@ -33,11 +33,11 @@ public class BusServiceImpl implements BusService {
 	@Override
 	public Optional<Bus> getBusById(Long busId) {
 		// TODO Auto-generated method stub
-		Optional<Bus> busTypeOpt = busRepository.findById(busId);
-		if(busTypeOpt.isEmpty()) {
-			throw new BusNotFoundException("Bus with id = "+busId+" is not found");
+		Optional<Bus> busOpt = busRepository.findById(busId);
+		if(busOpt.isEmpty()) {
+			throw new BusNotFoundException("BusType with id = "+busId+" is not found");
 		}
-		return busTypeOpt;
+		return busOpt;
 	}
 
 	

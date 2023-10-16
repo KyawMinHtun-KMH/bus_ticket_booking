@@ -64,14 +64,12 @@ public class TicketController {
 
 		return ResponseEntity.ok().body(ticketOpt.get());
 	}
-
-	@GetMapping("/searchticket")
-	public ResponseEntity<?> getAllTicketByRouteAndDepature(
-			@RequestBody RouteAndDepatureRequest routeAndDepatureRequest) {
-		List<Ticket> tickets = ticketService.getAllTicketByRouteAndDepature(routeAndDepatureRequest.getStartLocation(),
-				routeAndDepatureRequest.getEndLocation(), routeAndDepatureRequest.getDepature());
-		if (tickets == null) {
-			return new ResponseEntity<String>("This Route is not avaliable", HttpStatus.SERVICE_UNAVAILABLE);
+	
+	@PostMapping("/searchticket")
+	public ResponseEntity<?> getAllTicketByRouteAndDepature(@RequestBody RouteAndDepatureRequest routeAndDepatureRequest){
+		List<Ticket> tickets= ticketService.getAllTicketByRouteAndDepature(routeAndDepatureRequest.getStartLocation(), routeAndDepatureRequest.getEndLocation(), routeAndDepatureRequest.getDepature());
+		if(tickets == null) {
+			return new ResponseEntity<String>("This Route is not avaliable",HttpStatus.ACCEPTED);
 		}
 
 		return ResponseEntity.ok().body(tickets);
@@ -84,13 +82,13 @@ public class TicketController {
 			throw new TicketNotFoundException("Ticket with id = " + ticketId + " is not found");
 		}
 		Ticket ticket = ticketOpt.get();
-		if (ticket.getOrders() != null) {
-			return new ResponseEntity<String>("Ticket can not deleted when order is existed",
-					HttpStatus.SERVICE_UNAVAILABLE);
+		if(ticket.getOrders().isEmpty()) {
+			ticketService.deletTicket(ticketId);
+			return ResponseEntity.ok().body(ticketId.toString());
+			
 		}
-
-		ticketService.deletTicket(ticketId);
-		return ResponseEntity.ok().body(ticketId.toString());
+		return new ResponseEntity<String>("Ticket is not deleted order is existed",HttpStatus.SERVICE_UNAVAILABLE);
+		
 	}
 
 	@PutMapping("/update")
@@ -130,4 +128,6 @@ public class TicketController {
 		}
 		 return ResponseEntity.ok().body(ticketService.getAllTicketSeats(ticketOpt.get()));
 	}
+	
+	
 }

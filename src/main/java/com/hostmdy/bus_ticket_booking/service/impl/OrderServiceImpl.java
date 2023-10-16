@@ -113,34 +113,7 @@ public class OrderServiceImpl implements OrderService {
 	    }
 	
 
-//		for (final TicketSeat ticketSeat : ticketSeats) {
-//			for (final String seatNum : seatNumber) {
-//				if (ticket.getStatus()) {
-//					if (ticketSeat.getStatus().equals(false)) {
-//						throw new SeatNotFoundException("seat with " + seatNum + " can not order");
-//					}
-//					if (ticketSeat.getSeat().getSeatNumber().equals(seatNum) && ticketSeat.getStatus().equals(true)) {
-//						Order order = new Order();
-//
-//						ticketSeat.setStatus(false);
-//						Integer seatAmount = seatNumber.size();
-//						order.setSeatNumber(seatNumber);;
-//						order.setSeatAmount(seatAmount);
-//						order.setTotalPrice(seatAmount * ticket.getPrice());
-//						order.setPassenger(passenger);
-//						order.setPayment(payment);
-//						order.setUser(userOpt.get());
-//						order.setTicket(ticket);
-//
-//						return saveOrder(order);
-//					}
-//				}
-//				
-//			}
-//			
-//			
-//		}
-//		return null;
+
 	}
 
 	@Override
