@@ -21,7 +21,7 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter @NoArgsConstructor
-public class BusType {
+public class Bus {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -33,7 +33,7 @@ public class BusType {
 	@NotNull(message = "capacity is required")
 	private Integer capacity;
 	
-	@OneToMany(mappedBy = "busType")
+	@OneToMany(mappedBy = "bus")
 	@JsonIgnore
 	private List<Ticket> tickets = new ArrayList<>();
 	

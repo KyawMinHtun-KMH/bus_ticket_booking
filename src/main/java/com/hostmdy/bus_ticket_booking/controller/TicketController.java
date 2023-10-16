@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.hostmdy.bus_ticket_booking.domain.City;
 import com.hostmdy.bus_ticket_booking.domain.Ticket;
 import com.hostmdy.bus_ticket_booking.exception.TicketNotFoundException;
 import com.hostmdy.bus_ticket_booking.payload.RouteAndDepatureRequest;
@@ -62,11 +64,11 @@ public class TicketController {
 		return ResponseEntity.ok().body(ticketOpt.get());
 	}
 	
-	@GetMapping("/searchticket")
+	@PostMapping("/searchticket")
 	public ResponseEntity<?> getAllTicketByRouteAndDepature(@RequestBody RouteAndDepatureRequest routeAndDepatureRequest){
 		List<Ticket> tickets= ticketService.getAllTicketByRouteAndDepature(routeAndDepatureRequest.getStartLocation(), routeAndDepatureRequest.getEndLocation(), routeAndDepatureRequest.getDepature());
 		if(tickets == null) {
-			return new ResponseEntity<String>("This Route is not avaliable",HttpStatus.SERVICE_UNAVAILABLE);
+			return new ResponseEntity<String>("This Route is not avaliable",HttpStatus.ACCEPTED);
 		}
 		
 		return ResponseEntity.ok().body(tickets);
@@ -79,12 +81,13 @@ public class TicketController {
 			throw new TicketNotFoundException("Ticket with id = "+ticketId+" is not found");
 		}
 		Ticket ticket = ticketOpt.get();
-		if(ticket.getOrders() != null) {
-			return new ResponseEntity<String>("Ticket is not deleted order is existed",HttpStatus.SERVICE_UNAVAILABLE);
+		if(ticket.getOrders().isEmpty()) {
+			ticketService.deletTicket(ticketId);
+			return ResponseEntity.ok().body(ticketId.toString());
+			
 		}
+		return new ResponseEntity<String>("Ticket is not deleted order is existed",HttpStatus.SERVICE_UNAVAILABLE);
 		
-		ticketService.deletTicket(ticketId);
-		return ResponseEntity.ok().body(ticketId.toString());
 	}
 	
 	@PutMapping("/update")
@@ -106,5 +109,11 @@ public class TicketController {
 		
 		
 		 return new ResponseEntity<String>("Ticket is not deleted order is existed",HttpStatus.SERVICE_UNAVAILABLE);
+	}
+	
+	@GetMapping("/city")
+	public ResponseEntity<?> getAllCity(){
+		City[] cities = City.values();
+		return ResponseEntity.ok().body(cities);
 	}
 }

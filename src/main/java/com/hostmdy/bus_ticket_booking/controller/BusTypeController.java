@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hostmdy.bus_ticket_booking.domain.BusType;
-import com.hostmdy.bus_ticket_booking.service.BusTypeService;
+import com.hostmdy.bus_ticket_booking.domain.Bus;
+import com.hostmdy.bus_ticket_booking.service.BusService;
 import com.hostmdy.bus_ticket_booking.service.MapValidationErrorService;
 
 import jakarta.validation.Valid;
@@ -24,34 +24,34 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/busType")
+@RequestMapping("/api/bus")
 @CrossOrigin(origins = "http://localhost:3000")
 public class BusTypeController {
 	
-	private final BusTypeService busTypeService;
+	private final BusService busService;
 	private final MapValidationErrorService mapValidationErrorService;
 	
 	@PostMapping("/create")
-	public ResponseEntity<?> createBusType(@Valid @RequestBody BusType busType,BindingResult result){
+	public ResponseEntity<?> createBusType(@Valid @RequestBody Bus bus,BindingResult result){
 		
 		ResponseEntity<Map<String,String>> errorResponse = mapValidationErrorService.validate(result);
 		if(errorResponse != null) {
 			return errorResponse;
 		}
 		
-		return new ResponseEntity<BusType>(busTypeService.save(busType),HttpStatus.CREATED);
+		return new ResponseEntity<Bus>(busService.save(bus),HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/all")
-	public ResponseEntity<List<BusType>> getAllBusType(){
-		List<BusType> busTypes = busTypeService.getAllBusType();
+	public ResponseEntity<List<Bus>> getAllBusType(){
+		List<Bus> buses = busService.getAllBus();
 		
-		return ResponseEntity.ok().body(busTypes);
+		return ResponseEntity.ok().body(buses);
 	}
 	
 	@GetMapping("/{busTypeId}")
-	public ResponseEntity<BusType> getBusType(@PathVariable Long busTypeId){
-		Optional<BusType> busTypeOpt = busTypeService.getBusTypeById(busTypeId);
+	public ResponseEntity<Bus> getBusType(@PathVariable Long busId){
+		Optional<Bus> busTypeOpt = busService.getBusById(busId);
 		
 		return ResponseEntity.ok().body(busTypeOpt.get());
 	}
