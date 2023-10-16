@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/bus")
 @CrossOrigin(origins = "http://localhost:3000")
-public class BusTypeController {
+public class BusController {
 	
 	private final BusService busService;
 	private final MapValidationErrorService mapValidationErrorService;
@@ -43,7 +43,7 @@ public class BusTypeController {
 	}
 	
 	@GetMapping("/all")
-	public ResponseEntity<List<Bus>> getAllBusType(){
+	public ResponseEntity<List<Bus>> getAllBusses(){
 		List<Bus> buses = busService.getAllBus();
 		
 		return ResponseEntity.ok().body(buses);
@@ -51,9 +51,9 @@ public class BusTypeController {
 	
 	@GetMapping("/{busTypeId}")
 	public ResponseEntity<Bus> getBusType(@PathVariable Long busId){
-		Optional<Bus> busTypeOpt = busService.getBusById(busId);
+		Optional<Bus> busOpt = busService.getBusById(busId);
 		
-		return ResponseEntity.ok().body(busTypeOpt.get());
+		return ResponseEntity.ok().body(busOpt.get());
 	}
 	
 	

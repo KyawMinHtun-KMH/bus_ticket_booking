@@ -32,7 +32,7 @@ public class Passenger {
 	private String email;
 	private String specialRequest;
 	
-	@OneToOne
+	@OneToOne(mappedBy = "passenger")
 	@JsonIgnore
 	private Order order;
 	

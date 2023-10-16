@@ -13,6 +13,6 @@ public interface TicketSeatRepository extends CrudRepository<TicketSeat, Long>{
 	
 	List<TicketSeat> findByTicket(Ticket ticket);
 	
-	List<TicketSeat> findBySeat(Seat seat);
+	TicketSeat findBySeat(Seat seat);
 
 }

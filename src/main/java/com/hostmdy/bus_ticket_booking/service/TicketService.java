@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import com.hostmdy.bus_ticket_booking.domain.Route;
 import com.hostmdy.bus_ticket_booking.domain.Ticket;
+import com.hostmdy.bus_ticket_booking.domain.TicketSeat;
 
 public interface TicketService {
 	Ticket save(Ticket ticket);
@@ -22,4 +23,6 @@ public interface TicketService {
 	void deletTicket(Long ticketId);
 	
 	Ticket updateTicket(Ticket ticket,String typeName,Route route);
+	
+	List<TicketSeat> getAllTicketSeats(Ticket ticket);
 }

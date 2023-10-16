@@ -1,6 +1,5 @@
 package com.hostmdy.bus_ticket_booking.controller;
 
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -34,33 +33,35 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/ticket")
 @CrossOrigin(origins = "http://localhost:3000")
 public class TicketController {
-	
+
 	private final TicketService ticketService;
 	private final MapValidationErrorService mapValidationErrorService;
-	
+
 	@PostMapping("/create")
-	public ResponseEntity<?> createTicket(@Valid @RequestBody TicketRequest ticketRequest,BindingResult bindingResult){
-		
+	public ResponseEntity<?> createTicket(@Valid @RequestBody TicketRequest ticketRequest,
+			BindingResult bindingResult) {
+
 		ResponseEntity<Map<String, String>> errorRespose = mapValidationErrorService.validate(bindingResult);
-		if(errorRespose != null) {
+		if (errorRespose != null) {
 			return errorRespose;
 		}
-		
-		Ticket ticket = ticketService.createTicket(ticketRequest.getTicket(), ticketRequest.getTypeName(), ticketRequest.getRoute());
-		
-		return new ResponseEntity<Ticket>(ticket,HttpStatus.CREATED);
+
+		Ticket ticket = ticketService.createTicket(ticketRequest.getTicket(), ticketRequest.getTypeName(),
+				ticketRequest.getRoute());
+
+		return new ResponseEntity<Ticket>(ticket, HttpStatus.CREATED);
 	}
-	
+
 	@GetMapping("/all")
-	public ResponseEntity<List<Ticket>> getAllTicket(){
-		
+	public ResponseEntity<List<Ticket>> getAllTicket() {
+
 		return ResponseEntity.ok().body(ticketService.getAllTicket());
 	}
-	
+
 	@GetMapping("/{ticketId}")
-	public ResponseEntity<Ticket> getTicket(@PathVariable Long ticketId){
+	public ResponseEntity<Ticket> getTicket(@PathVariable Long ticketId) {
 		Optional<Ticket> ticketOpt = ticketService.getTicketById(ticketId);
-		
+
 		return ResponseEntity.ok().body(ticketOpt.get());
 	}
 	
@@ -70,15 +71,15 @@ public class TicketController {
 		if(tickets == null) {
 			return new ResponseEntity<String>("This Route is not avaliable",HttpStatus.ACCEPTED);
 		}
-		
+
 		return ResponseEntity.ok().body(tickets);
 	}
-	
+
 	@DeleteMapping("/delete/{ticketId}")
-	public ResponseEntity<?> deleteTicket(@PathVariable Long ticketId){
+	public ResponseEntity<?> deleteTicket(@PathVariable Long ticketId) {
 		Optional<Ticket> ticketOpt = ticketService.getTicketById(ticketId);
-		if(ticketOpt.isEmpty()) {
-			throw new TicketNotFoundException("Ticket with id = "+ticketId+" is not found");
+		if (ticketOpt.isEmpty()) {
+			throw new TicketNotFoundException("Ticket with id = " + ticketId + " is not found");
 		}
 		Ticket ticket = ticketOpt.get();
 		if(ticket.getOrders().isEmpty()) {
@@ -89,31 +90,44 @@ public class TicketController {
 		return new ResponseEntity<String>("Ticket is not deleted order is existed",HttpStatus.SERVICE_UNAVAILABLE);
 		
 	}
-	
+
 	@PutMapping("/update")
-	public ResponseEntity<?> updateTicket(@Valid @RequestBody TicketRequest ticketRequest,BindingResult bindingResult){
-		
+	public ResponseEntity<?> updateTicket(@Valid @RequestBody TicketRequest ticketRequest,
+			BindingResult bindingResult) {
+
 		ResponseEntity<Map<String, String>> errorRespose = mapValidationErrorService.validate(bindingResult);
-		if(errorRespose != null) {
+		if (errorRespose != null) {
 			return errorRespose;
 		}
-		
+
 		Long ticketId = ticketRequest.getTicket().getId();
 		Optional<Ticket> tickeOpt = ticketService.getTicketById(ticketId);
-		
-		 if(tickeOpt.get().getOrders().isEmpty()) {
-			 Ticket ticket = ticketService.updateTicket(ticketRequest.getTicket(), ticketRequest.getTypeName(), ticketRequest.getRoute());
-				
-				return ResponseEntity.ok().body(ticket);
-		 }
-		
-		
-		 return new ResponseEntity<String>("Ticket is not deleted order is existed",HttpStatus.SERVICE_UNAVAILABLE);
+
+		if (tickeOpt.get().getOrders().isEmpty()) {
+			Ticket ticket = ticketService.updateTicket(ticketRequest.getTicket(), ticketRequest.getTypeName(),
+					ticketRequest.getRoute());
+
+			return ResponseEntity.ok().body(ticket);
+		}
+
+		return new ResponseEntity<String>("Ticket can is not updated when order is existed",
+				HttpStatus.SERVICE_UNAVAILABLE);
 	}
-	
+
 	@GetMapping("/city")
-	public ResponseEntity<?> getAllCity(){
+	public ResponseEntity<?> getAllCity() {
 		City[] cities = City.values();
 		return ResponseEntity.ok().body(cities);
 	}
+	
+	@GetMapping("{ticketId}/ticketSeats")
+	public ResponseEntity<?> getTicketSeats(@PathVariable Long ticketId){
+		Optional<Ticket> ticketOpt = ticketService.getTicketById(ticketId);
+		if (ticketOpt.isEmpty()) {
+			throw new TicketNotFoundException("Ticket with id = " + ticketId + " is not found");
+		}
+		 return ResponseEntity.ok().body(ticketService.getAllTicketSeats(ticketOpt.get()));
+	}
+	
+	
 }

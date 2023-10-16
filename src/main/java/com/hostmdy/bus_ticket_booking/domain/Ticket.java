@@ -61,7 +61,7 @@ public class Ticket {
 	private Set<Order> orders = new HashSet<>();
 	
 	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "busType_id")
+	@JoinColumn(name = "bus_id")
 	private Bus bus;
 	
 	@ManyToOne(cascade = CascadeType.PERSIST)
