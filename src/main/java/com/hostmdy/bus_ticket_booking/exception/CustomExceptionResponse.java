@@ -38,14 +38,26 @@ public class CustomExceptionResponse {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	}
 	
-	@ExceptionHandler(BusTypeNotFoundException.class)
-	public ResponseEntity<NotFoundExceptionResponse> handleBusTypeNotFoundException(BusTypeNotFoundException ex){
+	@ExceptionHandler(BusNotFoundException.class)
+	public ResponseEntity<NotFoundExceptionResponse> handleBusTypeNotFoundException(BusNotFoundException ex){
 		NotFoundExceptionResponse response = new NotFoundExceptionResponse(ex.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	}
 	
 	@ExceptionHandler(SeatNotFoundException.class)
 	public ResponseEntity<NotFoundExceptionResponse> handleSeatNotFoundException(SeatNotFoundException ex){
+		NotFoundExceptionResponse response = new NotFoundExceptionResponse(ex.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	}
+	
+	@ExceptionHandler(OrderCreationException.class)
+	public ResponseEntity<OrderCreationExceptionResponse> handleOrderCreationException(OrderCreationException ex){
+		OrderCreationExceptionResponse response = new OrderCreationExceptionResponse(ex.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+	}
+	
+	@ExceptionHandler(OrderNotFoundException.class)
+	public ResponseEntity<NotFoundExceptionResponse> handleOrderNotFoundException(OrderNotFoundException ex){
 		NotFoundExceptionResponse response = new NotFoundExceptionResponse(ex.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 	}

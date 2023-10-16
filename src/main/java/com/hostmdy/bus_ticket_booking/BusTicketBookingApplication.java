@@ -47,34 +47,34 @@ public class BusTicketBookingApplication implements CommandLineRunner{
 		roleRepository.save(role2);
 		
 		Seat seat1 = new Seat();
-		seat1.setSeatNumber("A1");
+		seat1.setSeatNumber("1");
 		
 		Seat seat2 = new Seat();
-		seat2.setSeatNumber("A2");
+		seat2.setSeatNumber("2");
 		
 		Seat seat3 = new Seat();
-		seat3.setSeatNumber("A3");
+		seat3.setSeatNumber("3");
 		
 		Seat seat4 = new Seat();
-		seat4.setSeatNumber("A4");
+		seat4.setSeatNumber("4");
 		
 		Seat seat5 = new Seat();
-		seat5.setSeatNumber("A5");
+		seat5.setSeatNumber("5");
 		
 		Seat seat6 = new Seat();
-		seat6.setSeatNumber("A6");
+		seat6.setSeatNumber("6");
 		
 		Seat seat7 = new Seat();
-		seat7.setSeatNumber("A7");
+		seat7.setSeatNumber("7");
 		
 		Seat seat8 = new Seat();
-		seat8.setSeatNumber("A8");
+		seat8.setSeatNumber("8");
 		
 		Seat seat9 = new Seat();
-		seat9.setSeatNumber("A9");
+		seat9.setSeatNumber("9");
 		
 		Seat seat10 = new Seat();
-		seat10.setSeatNumber("A10");
+		seat10.setSeatNumber("10");
 		
 		seatRepository.save(seat1);
 		seatRepository.save(seat2);

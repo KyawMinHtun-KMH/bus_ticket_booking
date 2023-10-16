@@ -13,6 +13,8 @@ import com.hostmdy.bus_ticket_booking.domain.Payment;
 import com.hostmdy.bus_ticket_booking.domain.Ticket;
 import com.hostmdy.bus_ticket_booking.domain.TicketSeat;
 import com.hostmdy.bus_ticket_booking.domain.User;
+import com.hostmdy.bus_ticket_booking.exception.OrderCreationException;
+import com.hostmdy.bus_ticket_booking.exception.OrderNotFoundException;
 import com.hostmdy.bus_ticket_booking.exception.SeatNotFoundException;
 import com.hostmdy.bus_ticket_booking.exception.TicketNotFoundException;
 import com.hostmdy.bus_ticket_booking.exception.UsernameNotFoundException;
@@ -36,6 +38,15 @@ public class OrderServiceImpl implements OrderService {
 		// TODO Auto-generated method stub
 		return orderRepository.save(order);
 	}
+	
+	private TicketSeat findTicketSeatBySeatNumber(String seatNum, Set<TicketSeat> ticketSeats) {
+	    for (TicketSeat ticketSeat : ticketSeats) {
+	        if (ticketSeat.getSeat().getSeatNumber().equals(seatNum)) {
+	            return ticketSeat;
+	        }
+	    }
+	    return null; // Return null if the seat with the specified number is not found.
+	}
 
 	@Override
 	@Transactional
@@ -52,34 +63,84 @@ public class OrderServiceImpl implements OrderService {
 		}
 		Ticket ticket = ticketOpt.get();
 		Set<TicketSeat> ticketSeats = ticket.getTicketSeats();
+		
 
-		for (final TicketSeat ticketSeat : ticketSeats) {
-			for (final String seatNum : seatNumber) {
-				if (ticket.getStatus()) {
-					if (ticketSeat.getStatus().equals(false)) {
-						throw new SeatNotFoundException("seat with " + seatNum + " can not order");
-					}
-					if (ticketSeat.getSeat().getSeatNumber().equals(seatNum) && ticketSeat.getStatus().equals(true)) {
+		Order order = null;
 
-						Order order = new Order();
+	    for (String seatNum : seatNumber) {
+//	        if (!isValidSeat(seatNum)) {
+//	            throw new InvalidSeatException("Invalid seat number: " + seatNum);
+//	        }
 
-						ticketSeat.setStatus(false);
-						Integer seatAmount = seatNumber.size();
-						order.setSeatNumber(seatNumber);
-						order.setSeatAmount(seatAmount);
-						order.setTotalPrice(seatAmount * ticket.getPrice());
-						order.setPassenger(passenger);
-						order.setPayment(payment);
-						order.setUser(userOpt.get());
-						order.setTicket(ticket);
+	        TicketSeat ticketSeat = findTicketSeatBySeatNumber(seatNum, ticketSeats);
 
-						return saveOrder(order);
-					}
-				}
-			}
+	        if (ticketSeat == null) {
+	            throw new SeatNotFoundException("Seat with number " + seatNum + " not found.");
+	        }
 
-		}
-		return null;
+	        if (!ticket.getStatus()) {
+	            throw new OrderCreationException("Order creation failed: Ticket is not available.");
+	        }
+
+	        if (!ticketSeat.getStatus()) {
+	            throw new SeatNotFoundException("Seat with " + seatNum + " cannot be ordered.");
+	        }
+
+	        if (!ticketSeat.getSeat().getSeatNumber().equals(seatNum)) {
+	            throw new SeatNotFoundException("Seat with " + seatNum + " not found in the ticket seats.");
+	        }
+
+	        if (order == null) {
+	            order = new Order();
+	            order.setSeatNumber(seatNumber);
+	            order.setSeatAmount(seatNumber.size());
+	            order.setTotalPrice(seatNumber.size() * ticket.getPrice());
+	            order.setPassenger(passenger);
+	            order.setPayment(payment);
+	            order.setUser(userOpt.get());
+	            order.setTicket(ticket);
+	        }
+
+	        // Mark the seat as reserved
+	        ticketSeat.setStatus(false);
+	    }
+
+	    if (order != null) {
+
+	        return saveOrder(order);
+	    } else {
+	        throw new OrderCreationException("No valid seats to create an order.");
+	    }
+	
+
+//		for (final TicketSeat ticketSeat : ticketSeats) {
+//			for (final String seatNum : seatNumber) {
+//				if (ticket.getStatus()) {
+//					if (ticketSeat.getStatus().equals(false)) {
+//						throw new SeatNotFoundException("seat with " + seatNum + " can not order");
+//					}
+//					if (ticketSeat.getSeat().getSeatNumber().equals(seatNum) && ticketSeat.getStatus().equals(true)) {
+//						Order order = new Order();
+//
+//						ticketSeat.setStatus(false);
+//						Integer seatAmount = seatNumber.size();
+//						order.setSeatNumber(seatNumber);;
+//						order.setSeatAmount(seatAmount);
+//						order.setTotalPrice(seatAmount * ticket.getPrice());
+//						order.setPassenger(passenger);
+//						order.setPayment(payment);
+//						order.setUser(userOpt.get());
+//						order.setTicket(ticket);
+//
+//						return saveOrder(order);
+//					}
+//				}
+//				
+//			}
+//			
+//			
+//		}
+//		return null;
 	}
 
 	@Override
@@ -96,7 +157,24 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void deleteOrderById(Long id) {
-		// TODO Auto-generated method stub
+		Optional<Order> orderOpt = getOrderById(id);
+		if(orderOpt.isEmpty()) {
+			throw new OrderNotFoundException("order with id="+id+" is not found");
+		}
+		
+		Order order = orderOpt.get();
+		Set<String> targetSeatNumbers = order.getSeatNumber();
+		Set<TicketSeat> ticketSeats = order.getTicket().getTicketSeats();
+		for (TicketSeat ticketSeat : ticketSeats) {
+		    String seatNumber = ticketSeat.getSeat().getSeatNumber();
+		    if (targetSeatNumbers.contains(seatNumber)) {
+		        ticketSeat.setStatus(true);
+		    }
+		}
+		
+		order.setUser(null);
+		saveOrder(order);
+		
 		orderRepository.deleteById(id);
 	}
 

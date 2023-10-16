@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/busType")
+@RequestMapping("/api/bus")
 @CrossOrigin(origins = "http://localhost:3000")
 public class BusController {
 	
@@ -32,28 +32,28 @@ public class BusController {
 	private final MapValidationErrorService mapValidationErrorService;
 	
 	@PostMapping("/create")
-	public ResponseEntity<?> createBusType(@Valid @RequestBody Bus busType,BindingResult result){
+	public ResponseEntity<?> createBusType(@Valid @RequestBody Bus bus,BindingResult result){
 		
 		ResponseEntity<Map<String,String>> errorResponse = mapValidationErrorService.validate(result);
 		if(errorResponse != null) {
 			return errorResponse;
 		}
 		
-		return new ResponseEntity<Bus>(busService.save(busType),HttpStatus.CREATED);
+		return new ResponseEntity<Bus>(busService.save(bus),HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/all")
-	public ResponseEntity<List<Bus>> getAllBusType(){
-		List<Bus> busTypes = busService.getAllBusType();
+	public ResponseEntity<List<Bus>> getAllBusses(){
+		List<Bus> busTypes = busService.getAllBusses();
 		
 		return ResponseEntity.ok().body(busTypes);
 	}
 	
 	@GetMapping("/{busTypeId}")
-	public ResponseEntity<Bus> getBusType(@PathVariable Long busTypeId){
-		Optional<Bus> busTypeOpt = busService.getBusTypeById(busTypeId);
+	public ResponseEntity<Bus> getBusType(@PathVariable Long busId){
+		Optional<Bus> busOpt = busService.getBusById(busId);
 		
-		return ResponseEntity.ok().body(busTypeOpt.get());
+		return ResponseEntity.ok().body(busOpt.get());
 	}
 	
 	

@@ -8,9 +8,9 @@ import com.hostmdy.bus_ticket_booking.domain.Bus;
 public interface BusService {
 	Bus save(Bus busType);
 	
-	List<Bus> getAllBusType();
+	List<Bus> getAllBusses();
 	
-	Optional<Bus> getBusTypeById(Long busTypeId);
+	Optional<Bus> getBusById(Long busId);
 	
 	/*void deletById(Long busTypeId);*/
 } 
