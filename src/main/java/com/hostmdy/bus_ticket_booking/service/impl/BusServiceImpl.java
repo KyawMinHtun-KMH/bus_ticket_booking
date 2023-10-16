@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.hostmdy.bus_ticket_booking.domain.Bus;
-import com.hostmdy.bus_ticket_booking.exception.BusTypeNotFoundException;
+import com.hostmdy.bus_ticket_booking.exception.BusNotFoundException;
 import com.hostmdy.bus_ticket_booking.repository.BusRepository;
 import com.hostmdy.bus_ticket_booking.service.BusService;
 
@@ -19,23 +19,23 @@ public class BusServiceImpl implements BusService {
 	private final BusRepository busRepository;
 
 	@Override
-	public Bus save(Bus busType) {
+	public Bus save(Bus bus) {
 		// TODO Auto-generated method stub
-		return busRepository.save(busType);
+		return busRepository.save(bus);
 	}
 
 	@Override
-	public List<Bus> getAllBusType() {
+	public List<Bus> getAllBusses() {
 		// TODO Auto-generated method stub
 		return (List<Bus>) busRepository.findAll();
 	}
 
 	@Override
-	public Optional<Bus> getBusTypeById(Long busTypeId) {
+	public Optional<Bus> getBusById(Long busId) {
 		// TODO Auto-generated method stub
-		Optional<Bus> busTypeOpt = busRepository.findById(busTypeId);
+		Optional<Bus> busTypeOpt = busRepository.findById(busId);
 		if(busTypeOpt.isEmpty()) {
-			throw new BusTypeNotFoundException("BusType with id = "+busTypeId+" is not found");
+			throw new BusNotFoundException("Bus with id = "+busId+" is not found");
 		}
 		return busTypeOpt;
 	}

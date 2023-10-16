@@ -8,15 +8,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hostmdy.bus_ticket_booking.domain.Order;
 import com.hostmdy.bus_ticket_booking.domain.User;
+import com.hostmdy.bus_ticket_booking.exception.OrderNotFoundException;
 import com.hostmdy.bus_ticket_booking.exception.UsernameNotFoundException;
 import com.hostmdy.bus_ticket_booking.payload.OrderRequest;
 import com.hostmdy.bus_ticket_booking.service.MapValidationErrorService;
@@ -71,6 +74,23 @@ public class OrderController {
 		
 		return ResponseEntity.status(HttpStatus.OK).body(orders);
 		
+	}
+	
+	@DeleteMapping("/{orderId}/delete")
+	public ResponseEntity<String> deleteOrderById(@PathVariable Long orderId){
+		orderService.deleteOrderById(orderId);
+		return ResponseEntity.status(HttpStatus.OK).body(orderId.toString());
+	}
+	
+	@PutMapping("/{orderId}/update")
+	public ResponseEntity<?> updateOrderById(@PathVariable Long orderId){
+		Optional<Order> orderOpt = orderService.getOrderById(orderId);
+		if(orderOpt.isEmpty()) {
+			throw new OrderNotFoundException("order with id="+orderId+" is not found");
+		}
+		Order order = orderOpt.get();
+		order.setStatus(true);
+		return ResponseEntity.status(HttpStatus.CREATED).body(orderService.saveOrder(order));
 	}
 
 }

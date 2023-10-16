@@ -5,7 +5,6 @@ import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,6 +31,7 @@ public class Order {
 	private Set<String> seatNumber;
 	private Integer seatAmount;
 	private Double totalPrice;
+	private Boolean status = false;
 	
 	@PrePersist
     private void prepersist() {
@@ -42,7 +42,7 @@ public class Order {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@OneToOne(mappedBy = "order",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "passenger_id")
 	private Passenger passenger;
 	

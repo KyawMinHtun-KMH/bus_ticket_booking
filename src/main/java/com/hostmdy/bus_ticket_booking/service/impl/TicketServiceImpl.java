@@ -177,4 +177,10 @@ public class TicketServiceImpl implements TicketService {
 		return save(ticket);
 	}
 
+	@Override
+	public List<TicketSeat> getAllTicketSeats(Ticket ticket) {
+		// TODO Auto-generated method stub
+		return ticketSeatRepository.findByTicket(ticket);
+	}
+
 }
