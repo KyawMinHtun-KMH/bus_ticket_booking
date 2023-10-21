@@ -17,10 +17,8 @@ import com.hostmdy.bus_ticket_booking.exception.OrderCreationException;
 import com.hostmdy.bus_ticket_booking.exception.OrderNotFoundException;
 import com.hostmdy.bus_ticket_booking.exception.SeatNotFoundException;
 import com.hostmdy.bus_ticket_booking.exception.TicketNotFoundException;
-import com.hostmdy.bus_ticket_booking.exception.UsernameNotFoundException;
 import com.hostmdy.bus_ticket_booking.repository.OrderRepository;
 import com.hostmdy.bus_ticket_booking.repository.TicketRepository;
-import com.hostmdy.bus_ticket_booking.repository.UserRepository;
 import com.hostmdy.bus_ticket_booking.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,7 +29,6 @@ public class OrderServiceImpl implements OrderService {
 
 	private final OrderRepository orderRepository;
 	private final TicketRepository ticketRepository;
-	private final UserRepository userRepository;
 
 	@Override
 	public Order saveOrder(Order order) {
@@ -50,13 +47,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	@Transactional
-	public Order createOrder(Set<String> seatNumber, Long ticketId, Passenger passenger, Payment payment, Long userId) {
+	public Order createOrder(Set<String> seatNumber, Long ticketId, Passenger passenger, Payment payment, User user) {
 		// TODO Auto-generated method stub
-		Optional<User> userOpt = userRepository.findById(userId);
-		if (userOpt.isEmpty()) {
-			throw new UsernameNotFoundException("user with id = " + userId + " is not found");
-		}
-
+		
 		Optional<Ticket> ticketOpt = ticketRepository.findById(ticketId);
 		if (ticketOpt.isEmpty()) {
 			throw new TicketNotFoundException("Ticket with id = " + ticketId + " is not found");
@@ -97,7 +90,7 @@ public class OrderServiceImpl implements OrderService {
 	            order.setTotalPrice(seatNumber.size() * ticket.getPrice());
 	            order.setPassenger(passenger);
 	            order.setPayment(payment);
-	            order.setUser(userOpt.get());
+	            order.setUser(user);
 	            order.setTicket(ticket);
 	        }
 

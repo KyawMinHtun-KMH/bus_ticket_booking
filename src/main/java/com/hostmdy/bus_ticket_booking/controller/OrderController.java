@@ -1,11 +1,14 @@
 package com.hostmdy.bus_ticket_booking.controller;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hostmdy.bus_ticket_booking.domain.Order;
 import com.hostmdy.bus_ticket_booking.domain.User;
 import com.hostmdy.bus_ticket_booking.exception.OrderNotFoundException;
-import com.hostmdy.bus_ticket_booking.exception.UsernameNotFoundException;
 import com.hostmdy.bus_ticket_booking.payload.OrderRequest;
 import com.hostmdy.bus_ticket_booking.service.MapValidationErrorService;
 import com.hostmdy.bus_ticket_booking.service.OrderService;
@@ -38,8 +40,14 @@ public class OrderController {
 	private final UserService userService;
 	private final MapValidationErrorService mapValidationErrorService;
 	
-	@PostMapping("/create/{ticketId}/{userId}")
-	public ResponseEntity<?> createOrder(@PathVariable Long userId,@PathVariable Long ticketId,@Valid @RequestBody OrderRequest orderRequest,BindingResult result){
+	@PostMapping("/create/{ticketId}")
+	public ResponseEntity<?> createOrder(@PathVariable Long ticketId,@Valid @RequestBody OrderRequest orderRequest,BindingResult result,Principal principal){
+		String username = principal.getName();
+		Optional<User> userOpt = userService.getUserByUsername(username);
+		
+		if(userOpt.isEmpty()) {
+			throw new UsernameNotFoundException(username+" is not found");
+		}
 		
 		ResponseEntity<Map<String, String>> errorResponse = mapValidationErrorService.validate(result);
 
@@ -47,7 +55,7 @@ public class OrderController {
 			return errorResponse;
 		}
 		
-		Order createdOrder = orderService.createOrder(orderRequest.getSeatNumber(), ticketId, orderRequest.getPassenger(), orderRequest.getPayment(), userId);
+		Order createdOrder = orderService.createOrder(orderRequest.getSeatNumber(), ticketId, orderRequest.getPassenger(), orderRequest.getPayment(), userOpt.get());
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
 		
@@ -62,14 +70,15 @@ public class OrderController {
 		
 	}
 	
-	@GetMapping("/{userId}/get")
-	public ResponseEntity<?> getOrdersByUser(@PathVariable Long userId){
+	@GetMapping("/get")
+	public ResponseEntity<?> getOrdersByUser(Principal principal) throws UserPrincipalNotFoundException{
 		
-		Optional<User> userOpt = userService.getUserById(userId);
-		if (userOpt.isEmpty()) {
-			throw new UsernameNotFoundException("user with id = "+userId+" is not found");
+		String username = principal.getName();
+		Optional<User> userOpt = userService.getUserByUsername(username);
+		
+		if(userOpt.isEmpty()) {
+			throw new UsernameNotFoundException(username+" is not found");
 		}
-		
 		List<Order> orders = orderService.getallOrdersByUser(userOpt.get());
 		
 		return ResponseEntity.status(HttpStatus.OK).body(orders);
