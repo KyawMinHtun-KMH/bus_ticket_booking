@@ -1,6 +1,7 @@
 package com.hostmdy.bus_ticket_booking.controller;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -18,6 +19,7 @@ import com.hostmdy.bus_ticket_booking.domain.User;
 import com.hostmdy.bus_ticket_booking.domain.security.Role;
 import com.hostmdy.bus_ticket_booking.domain.security.UserRole;
 import com.hostmdy.bus_ticket_booking.exception.RoleNotFoundException;
+import com.hostmdy.bus_ticket_booking.payload.JwtSuccessResponse;
 import com.hostmdy.bus_ticket_booking.payload.LoginRequest;
 import com.hostmdy.bus_ticket_booking.service.MapValidationErrorService;
 import com.hostmdy.bus_ticket_booking.service.RoleService;
@@ -53,9 +55,11 @@ public class UserController {
 
 		Set<UserRole> userRoles = new HashSet<>();
 		userRoles.add(new UserRole(user, roleOpt.get()));
-		userService.createUser(user, userRoles);
+		User createdUser = userService.createUser(user, userRoles);
+		List<String> roles = user.getUserRoles().stream().map((ur)->ur.getRole().getName()).toList();
+		JwtSuccessResponse jwtSuccessResponse = new JwtSuccessResponse(true, createdUser, roles);
 
-		return ResponseEntity.ok("User created okay");
+		return ResponseEntity.ok(jwtSuccessResponse);
 
 	}
 
@@ -72,8 +76,12 @@ public class UserController {
 		if (userOpt.isEmpty()) {
 			throw new RoleNotFoundException("user with username=" + loginRequest.getUsername() + " is not found");
 		}
+		User user = userOpt.get();
+		
+		List<String> roles = user.getUserRoles().stream().map((ur)->ur.getRole().getName()).toList();
+		JwtSuccessResponse jwtSuccessResponse = new JwtSuccessResponse(true, user, roles);
 
-		return ResponseEntity.ok("Login Success");
+		return ResponseEntity.ok(jwtSuccessResponse);
 
 	}
 

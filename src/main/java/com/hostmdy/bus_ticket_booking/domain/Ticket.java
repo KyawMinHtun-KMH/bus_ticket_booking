@@ -22,6 +22,7 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,6 +39,9 @@ public class Ticket {
 	@DecimalMin(value = "0",inclusive = false,message = "price is less than 1")
 	@NotNull(message = "price is required")
 	private Double price;
+	
+	@NotBlank
+	private String imageURL;
 	
 	private Boolean status = true;
 	
