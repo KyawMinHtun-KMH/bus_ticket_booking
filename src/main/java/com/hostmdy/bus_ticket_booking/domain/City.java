@@ -52,7 +52,7 @@ public enum City {
 	POPA,
 	PYAWBWE,
 	PYAY,
-	PYI_OO_LWIN,
+	PYIN_OO_LWIN,
 	SAW,
 	SEIKPHYU,
 	SHWE_NYAUNG,

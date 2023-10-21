@@ -13,6 +13,7 @@ import lombok.Setter;
 public class JwtSuccessResponse {
 	
 	private Boolean success;
+	private String token;
 	private User user;
 	private List<String> roles;
 

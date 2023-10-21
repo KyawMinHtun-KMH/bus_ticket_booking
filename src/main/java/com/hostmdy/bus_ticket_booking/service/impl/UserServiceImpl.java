@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ public class UserServiceImpl implements UserService{
 	
 	private final UserRepository userRepository;
 	private final RoleRepository roleRepository;
+	private final BCryptPasswordEncoder passwordEncoder;
 
 	@Override
 	public User save(User user) {
@@ -59,6 +61,7 @@ public class UserServiceImpl implements UserService{
 		
 		userRoles.forEach((ur) -> roleRepository.save(ur.getRole()));
 		user.setUserRoles(userRoles);
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		
 		return save(user);
 	}

@@ -1,16 +1,15 @@
 package com.hostmdy.bus_ticket_booking;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import com.hostmdy.bus_ticket_booking.domain.Bus;
 import com.hostmdy.bus_ticket_booking.domain.City;
 import com.hostmdy.bus_ticket_booking.domain.Route;
 import com.hostmdy.bus_ticket_booking.domain.Seat;
 import com.hostmdy.bus_ticket_booking.domain.security.Role;
-import com.hostmdy.bus_ticket_booking.repository.BusRepository;
 import com.hostmdy.bus_ticket_booking.repository.RoleRepository;
 import com.hostmdy.bus_ticket_booking.repository.RouteRepository;
 import com.hostmdy.bus_ticket_booking.repository.SeatRepository;
@@ -26,8 +25,6 @@ public class BusTicketBookingApplication implements CommandLineRunner{
 	@Autowired
 	public RouteRepository routeRepository;
 	
-	@Autowired
-	public BusRepository busRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(BusTicketBookingApplication.class, args);
@@ -36,6 +33,18 @@ public class BusTicketBookingApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		// TODO Auto-generated method stub
+		
+		if(!((List<Role>)(roleRepository.findAll())).isEmpty()) {
+			return;
+		}
+		
+		if(!((List<Seat>)(seatRepository.findAll())).isEmpty()) {
+			return;
+		}
+		
+		if(!((List<Route>)(routeRepository.findAll())).isEmpty()) {
+			return;
+		}
 		
 		Role role1 = new Role();
 		role1.setName("ROLE_ADMIN");
@@ -261,23 +270,13 @@ public class BusTicketBookingApplication implements CommandLineRunner{
 		
 		Route route4 = new Route();
 		route4.setStartLocation(City.YANGON);
-		route4.setEndLocation(City.PYI_OO_LWIN);
+		route4.setEndLocation(City.PYIN_OO_LWIN);
 		
 		routeRepository.save(route1);
 		routeRepository.save(route2);
 		routeRepository.save(route3);
 		routeRepository.save(route4);
 		
-		Bus type1 = new Bus();
-		type1.setCapacity(7);
-		type1.setTypeName("Scania Standard");
-		
-		Bus type2 = new Bus();
-		type2.setCapacity(5);
-		type2.setTypeName("Scania VIP");
-		
-		busRepository.save(type1);
-		busRepository.save(type2);
 		
 	}
 
