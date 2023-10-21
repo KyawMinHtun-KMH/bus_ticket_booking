@@ -13,7 +13,7 @@ public interface OrderService{
 	
     Order saveOrder(Order order);
 	
-	Order createOrder(Set<String> seatNumber,Long ticketId,Passenger passenger,Payment payment,Long userId);
+	Order createOrder(Set<String> seatNumber,Long ticketId,Passenger passenger,Payment payment,User user);
 	
 	Optional<Order> getOrderById(Long id);
 	
