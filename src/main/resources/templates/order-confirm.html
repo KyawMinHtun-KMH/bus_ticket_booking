@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Bus Ticket Booking Confirmation</title>
+</head>
+
+<body>
+	<table style="width: 100%; border-collapse: collapse;">
+		<tr>
+			<td>
+				<h1>Bus Ticket Booking Confirmation</h1>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>Dear <span th:text="${order.passenger.name}"></span>,</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>Your bus ticket booking has been confirmed. Here are the details:</p>
+			</td>
+		</tr>
+	</table>
+
+	<table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+		<!--<tr>
+            <td><strong>Booking ID:</strong></td>
+            <td><span th:text="${booking.id}"></span></td>
+        </tr>-->
+		<tr>
+			<td><strong>Bus Operator:</strong></td>
+			<td><span>Burmese Bus</span></td>
+		</tr>
+		<tr>
+			<td>Booking Date</td>
+			<td th:text="${order.bookingDateTime}"></td>
+		</tr>
+		<tr>
+			<td>Route</td>
+			<td th:text="${order.ticket.route.startLocation + ' - ' + order.ticket.route.endLocation}"></td>
+		</tr>
+		<tr>
+			<td><strong>Departure Date:</strong></td>
+			<td><span th:text="${order.ticket.startDateTime}"></span></td>
+		</tr>
+		<tr>
+			<td>Arrival Date:</td>
+			<td th:text="${order.ticket.endDateTime}"></td>
+		</tr>
+		<tr>
+			<td><strong>Seat Number:</strong></td>
+			<td><span th:each="seatNumber,iterStat : ${order.seatNumber}">
+				<span th:text="${seatNumber}"></span>
+				<span th:unless="${!iterStat.last}">  </span>
+			</span></td>
+		</tr>
+		<tr>
+			<td><strong>Total Price:</strong></td>
+			<td><span th:text="${order.totalPrice}"></span> MMK</td>
+		</tr>
+	</table>
+
+	<p>Thank you for choosing our bus service. Have a safe and pleasant journey!</p>
+</body>
+
+</html>
