@@ -95,6 +95,9 @@ public class TicketServiceImpl implements TicketService {
 					&& route.getEndLocation().toString().equals(endLocation)) {
 				List<Ticket> tickets = route.getTickets();
 				List<Ticket> filterTickets = tickets.stream().filter(t -> t.getDepature().equals(depature)).toList();
+				if(filterTickets.isEmpty()) {
+					return null;
+				}
 
 				return filterTickets;
 			}
