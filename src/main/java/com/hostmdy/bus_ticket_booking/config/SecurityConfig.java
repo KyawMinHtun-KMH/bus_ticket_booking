@@ -78,7 +78,8 @@ public class SecurityConfig {
 				.requestMatchers(mvc.pattern("/api/order/{ticketId:[0-9]+}")).permitAll()
 				.requestMatchers(mvc.pattern("/api/order/create/{ticketId:[0-9]+}")).hasRole("USER")
 				.requestMatchers(mvc.pattern("/api/order/get")).hasRole("USER")
-				
+				.requestMatchers(mvc.pattern("/api/email/reject/{orderId:[0-9]+}")).hasRole("ADMIN")
+				.requestMatchers(mvc.pattern("/api/email/confirm/{orderId:[0-9]+}")).hasRole("ADMIN")
 				.anyRequest().authenticated()	
 			);
 			http.authenticationProvider(authProvider());
