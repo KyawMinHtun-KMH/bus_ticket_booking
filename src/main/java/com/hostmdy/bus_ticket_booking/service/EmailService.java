@@ -8,6 +8,8 @@ public interface EmailService {
 	
 	void sendOrderConfirmEmail(Long orderId);
 	
+	void sendMailConfirmCode(String to,String code);
+	
 	void sendAttachmentEmail(AttachmentEmailRequest email);
 
 }
