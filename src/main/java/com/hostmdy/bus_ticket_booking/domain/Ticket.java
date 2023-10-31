@@ -39,10 +39,13 @@ public class Ticket {
 	@NotNull(message = "price is required")
 	private Double price;
 	
-	@NotBlank
-	private String imageURL;
+//	@NotBlank
+//	private String imageURL;
 	
 	private Boolean status = true;
+	
+	private String image;
+	
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd", iso = DateTimeFormat.ISO.DATE)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
