@@ -44,7 +44,6 @@ public class Ticket {
 	
 	private Boolean status = true;
 	
-	
 	@DateTimeFormat(pattern = "yyyy-MM-dd", iso = DateTimeFormat.ISO.DATE)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	@NotNull(message = "depature is required")

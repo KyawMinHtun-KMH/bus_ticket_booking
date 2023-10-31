@@ -60,4 +60,11 @@ public class EmailServiceImpl implements EmailService{
 		sender.send(mail);
 	}
 
+	@Override
+	public void sendMailConfirmCode(String to, String code) {
+		// TODO Auto-generated method stub
+		MimeMessagePreparator mail = mailConstructor.constructTemplateMailForCode(to,env.getProperty("email_confirm_subject"),code);
+		sender.send(mail);
+	}
+
 }
