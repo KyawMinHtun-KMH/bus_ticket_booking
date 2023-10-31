@@ -73,6 +73,8 @@ public class SecurityConfig {
 				.requestMatchers(mvc.pattern("/api/bus/create")).hasRole("ADMIN")
 				.requestMatchers(mvc.pattern("/api/bus/all")).hasRole("ADMIN")
 				
+				.requestMatchers(mvc.pattern("/api/image/{imageName}")).permitAll()
+				
 				.requestMatchers(mvc.pattern("/api/order/{orderId:[0-9]+}/update")).hasRole("ADMIN")
 				.requestMatchers(mvc.pattern("/api/order/{orderId:[0-9]+}/delete")).hasRole("ADMIN")
 				.requestMatchers(mvc.pattern("/api/order/{ticketId:[0-9]+}")).permitAll()
