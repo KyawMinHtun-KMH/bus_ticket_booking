@@ -2,68 +2,104 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<title>Bus Ticket Booking Confirmation</title>
+    <meta charset="UTF-8">
+    <title>Bus Ticket Booking Confirmation</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .ticket {
+            background-color: #fff;
+            max-width: 500px;
+            margin: 20px auto;
+            border: 2px solid #000;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .ticket-header {
+            text-align: center;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .ticket-header h1 {
+            margin: 5px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        table tr td {
+            padding: 8px 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        table tr td:first-child {
+            width: 40%;
+            font-weight: bold;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 
 <body>
-	<table style="width: 100%; border-collapse: collapse;">
-		<tr>
-			<td>
-				<h1>Bus Ticket Booking Confirmation</h1>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<p>Dear <span th:text="${order.passenger.name}"></span>,</p>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<p>Your bus ticket booking has been confirmed. Here are the details:</p>
-			</td>
-		</tr>
-	</table>
+    <div class="ticket">
+        <div class="ticket-header">
+            <h1>Bus Ticket Booking Confirmation</h1>
+        </div>
 
-	<table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-		<!--<tr>
-            <td><strong>Booking ID:</strong></td>
-            <td><span th:text="${booking.id}"></span></td>
-        </tr>-->
-		<tr>
-			<td><strong>Bus Operator:</strong></td>
-			<td><span>Burmese Bus</span></td>
-		</tr>
-		<tr>
-			<td>Booking Date</td>
-			<td th:text="${order.bookingDateTime}"></td>
-		</tr>
-		<tr>
-			<td>Route</td>
-			<td th:text="${order.ticket.route.startLocation + ' - ' + order.ticket.route.endLocation}"></td>
-		</tr>
-		<tr>
-			<td><strong>Departure Date:</strong></td>
-			<td><span th:text="${order.ticket.startDateTime}"></span></td>
-		</tr>
-		<tr>
-			<td>Arrival Date:</td>
-			<td th:text="${order.ticket.endDateTime}"></td>
-		</tr>
-		<tr>
-			<td><strong>Seat Number:</strong></td>
-			<td><span th:each="seatNumber,iterStat : ${order.seatNumber}">
-				<span th:text="${seatNumber}"></span>
-				<span th:unless="${!iterStat.last}">  </span>
-			</span></td>
-		</tr>
-		<tr>
-			<td><strong>Total Price:</strong></td>
-			<td><span th:text="${order.totalPrice}"></span> MMK</td>
-		</tr>
-	</table>
+        <table>
+            <tr>
+                <td><strong>Bus Operator:</strong></strong></td>
+                <td>Burmese Bus</td>
+            </tr>
+            <tr>
+                <td><strong>Booking Date:</strong></td>
+                <td th:text="${order.bookingDateTime}"></td>
+            </tr>
+            <tr>
+                <td><strong>Route:</strong></td>
+                <td th:text="${order.ticket.route.startLocation + ' - ' + order.ticket.route.endLocation}"></td>
+            </tr>
+            <tr>
+                <td><strong>Departure Date:</strong></td>
+                <td th:text="${order.ticket.startDateTime}"></td>
+            </tr>
+            <tr>
+                <td><strong>Arrival Date:</strong></td>
+                <td th:text="${order.ticket.endDateTime}"></td>
+            </tr>
+            <tr>
+                <td><strong>Seat Number:</strong></td>
+                <td>
+                    <span th:each="seatNumber,iterStat : ${order.seatNumber}">
+                        <span th:text="${seatNumber}"></span>
+                        <span th:unless="${!iterStat.last}">  </span>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Total Price:</strong></td>
+                <td><span th:text="${order.totalPrice}"></span> MMK</td>
+            </tr>
+        </table>
 
-	<p>Thank you for choosing our bus service. Have a safe and pleasant journey!</p>
+        <p>Thank you for choosing our bus service. Have a safe and pleasant journey!</p>
+    </div>
 </body>
 
 </html>

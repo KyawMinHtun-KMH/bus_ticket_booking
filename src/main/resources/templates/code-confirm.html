@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Bus Ticket Booking Confirmation</title>
+    <style>
+		h1 {
+			margin: 100px 0 50px 100px;
+		}
+		p {
+			margin: 0px 0px 50px 100px;
+		}
+		h2 {
+			margin: 0px 0px 50px 100px;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Confirm Your Email</h1>
+	<p>You requested a verification email from Burmese Bus. Use this code to complete the process.</p>
+    <h2 th:text=${code}></h2>
+</body>
+
+</html>

@@ -66,6 +66,7 @@ public class SecurityConfig {
 				
 				.requestMatchers(mvc.pattern("/api/user/signin")).permitAll()
 				.requestMatchers(mvc.pattern("/api/user/signup")).permitAll()
+				.requestMatchers(mvc.pattern("/api/email/code/confirm")).permitAll()
 				
 				.requestMatchers(mvc.pattern("/api/route/create")).hasRole("ADMIN")
 				.requestMatchers(mvc.pattern("/api/route/all")).hasRole("ADMIN")
